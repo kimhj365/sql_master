@@ -231,7 +231,8 @@ FROM dual;
 SELECT last_name, salary, MOD(salary, 5000)
 FROM employees;
 
---문제---------------------
+
+--sql03_1 문제--------------------------------
 --1.
 SELECT SYSDATE "Date"
 FROM dual;
@@ -250,7 +251,7 @@ SELECT UPPER(last_name) "Upper Name", LENGTH(last_name) "Name Length"
 FROM employees
 WHERE UPPER(SUBSTR(last_name, 1, 1)) IN ('J', 'A', 'M')
 ORDER BY 1;
----------------------------
+----------------------------------------------
 
 --3. 날짜 함수
 --기본 날짜 형식 : DD-MON-YY
@@ -260,13 +261,13 @@ SELECT SYSDATE
 FROM dual;
 
 --날짜-날짜 : 숫자(일수)
-SELECT last_name, (SYSDATE-hire_date) / 7 AS WEEKS
+SELECT last_name, (SYSDATE-hire_date) / 7 AS WEEKS --주급 계산
 FROM employees
 WHERE department_id = 90;
 
 --MONTHS_BETWEEN : 날짜 사이의 월 수
 --ADD_MONTHS : 월 더하기
---NEXT_DAY : 다음에 돌아오는 요일의 날짜
+--NEXT_DAY : 다음에 돌아오는 요일의 날짜(1:일요일 ~ 7:토요일)
 --LAST_DAY : 월의 마지막 날짜
 
 SELECT employee_id, hire_date, 
@@ -458,6 +459,7 @@ FROM employees
 WHERE department_id = 90;
 
 ----------------------------------------------
+
 --sql04 문제----------------------------------
 --1.
 SELECT last_name
@@ -468,16 +470,33 @@ SELECT last_name
 FROM employees;
 
 --2.
-SELECT last_name, TO_CHAR(hire_date, 'YYYY.MM.DD'), 
-       TO_CHAR(NEXT_DAY(ADD_MONTHS(hire_date, 6),'monday'), 'YYYY.MM.DD') REVIEW
+SELECT last_name, hire_date,
+       TO_CHAR(NEXT_DAY(ADD_MONTHS(hire_date, 6),2), 'YYYY.MM.DD DAY') REVIEW
 FROM employees;
+--ADD_MONTH(_,6) : 입사일 + 6개월
+--NEXT_DAT(_,2) : 첫번째 월요일
+--TO_CHAR(_, 'YYYY.MM.DD DAY') : 문자열 변환
 
 --3.
-SELECT last_name, NEXT_DAY(hire_date,'monday') 
-FROM employees;
+SELECT last_name, hire_date, TO_CHAR(hire_date, 'day') DAY
+FROM employees
+ORDER BY MOD(TO_NUMBER(TO_CHAR(hire_date, 'd'))+5, 7);
+--TO_CHAR(hire_date, 'd') => 1: 일, 2: 월
+--TO_NUMBER(_) + 5 => 6: 일, 7: 월
+--MOD(_,7) => 6: 일, 0: 월
 
 --4.
+SELECT last_name, NVL(TO_CHAR(commission_pct), 'No Commission') COMM
+FROM employees;
 
 --5.
-
+SELECT last_name, job_id,
+       DECODE(job_id, 'AD_PRES',  'A',
+                      'ST_MAN',   'B',
+                      'IT_PROG',  'C',
+                      'SA_REP',   'D',
+                      'ST_CLERK', 'E',
+                                   0)
+       GRADE
+FROM employees;
 ----------------------------------------------
