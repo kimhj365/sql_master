@@ -240,8 +240,8 @@ AND department_id IN (20, 50);
 --7.
 SELECT last_name, hire_date
 FROM employees
-WHERE hire_date BETWEEN '04/01/01' and '04/12/31';
---14년 입사자 없어서 04년 입사자로 바꿈
+--WHERE hire_date BETWEEN '05/01/01' and '05/12/31';
+WHERE hire_date LIKE '05%';
 
 --8.
 SELECT last_name, job_id
@@ -256,8 +256,9 @@ WHERE last_name LIKE '__a%';
 --11.
 SELECT last_name
 FROM employees
-WHERE last_name  LIKE '%a%'
+WHERE last_name LIKE '%a%'
 AND last_name LIKE '%e%';
+
 
 --12.
 SELECT last_name, job_id, salary
