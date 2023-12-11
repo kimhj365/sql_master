@@ -163,12 +163,15 @@ from employees;
 --dual 테이블 : 행 1개 => 리턴값 확인 쉬움
 select sysdate
 from dual;
+
 --<단일 행 함수>
+
 --1. 문자 함수
 --LOWER : 소문자로 리턴
 --UPPER : 대문자로 리턴
 --INITCAP : 단어 첫글자는 대문자, 나머지 소문자(ex. Ye Dam)
-SELECT 'The job id for '||UPPER(last_name)||' is '|| LOWER(job_id) AS "EMPLOYEE DETAILS"
+SELECT 'The job id for '||UPPER(last_name)||' is '|| 
+        LOWER(job_id) AS "EMPLOYEE DETAILS"
 FROM employees;
 
 --컬럼명에 씌워서 컬럼 전체 값 소문자로 출력 가능
@@ -232,26 +235,37 @@ SELECT last_name, salary, MOD(salary, 5000)
 FROM employees;
 
 
---sql03_1 문제--------------------------------
+--sql03_1 문제------------------------------------------------------------------
+
 --1.
 SELECT SYSDATE "Date"
 FROM dual;
 
---2.
-SELECT employee_id, last_name, salary, ROUND(salary*1.15) "New Salary"
+--2. 각 사원에 대해 사원 번호, 이름, 급여 및
+--   15% 인상된 급여를 정수로 표시하시오.
+--   인상된 급여 열의 레이블을 New Salary로 지정하시오. 
+SELECT employee_id, last_name, salary, 
+       ROUND(salary*1.15) "New Salary"
 FROM employees;
 
---3.
+--3. 2번 질의를 수정하여 
+--  새 급여에서 이전 급여를 빼는 새 열을 추가하고 
+--  레이블을 Increase로 지정하고 수정한 질의를 실행하시오.
 SELECT employee_id, last_name, salary,
-       ROUND(salary*1.15) "New Salary", ROUND(salary*1.15-salary) "Increase"
+       ROUND(salary*1.15) "New Salary", 
+       ROUND(salary*1.15-salary) "Increase"
 FROM employees;
 
---4.
+--4. 이름이 J, A 또는 M으로 시작하는 
+--   모든 사원의 이름(대문자 표시) 및 이름 길이를 표시하는 
+--   질의를 작성하고 각열에 적합한 레이블을 지정하시오. 
+--   결과를 사원의 이름에 따라 정렬하시오.
 SELECT UPPER(last_name) "Upper Name", LENGTH(last_name) "Name Length"
 FROM employees
 WHERE UPPER(SUBSTR(last_name, 1, 1)) IN ('J', 'A', 'M')
 ORDER BY 1;
-----------------------------------------------
+
+--------------------------------------------------------------------------------
 
 --3. 날짜 함수
 --기본 날짜 형식 : DD-MON-YY
@@ -444,24 +458,37 @@ FROM employees;
 --중첩 함수 : 단일행 함수 몇번이고 계속 중첩가능 
 --=> 안에서 부터 바깥쪽으로 계산
 
---sql03_2 문제--------------------------------
---5. 
+--sql03_2 문제------------------------------------------------------------------
+
+--5. 각 사원의 이름을 표시하고 
+--   근무 달 수(입사일로부터 현재까지의 달 수)를 계산하여 
+--   열 레이블을 MONTHS_WORKED로 지정하시오. 
+--   결과는 정수로 반올림하여 표시하시오.
 SELECT last_name, ROUND(MONTHS_BETWEEN(SYSDATE, hire_date)) MONTHS_WORKED
 FROM employees;
 
---6.
+--6. 모든 사원의 성 및 급여를 표시하기 위한 query를 작성합니다. 
+--   급여가 15자 길이로 표시되고 왼쪽에 # 기호가 채워지도록 형식을 지정하시오. 
+--   열 레이블을 SALARY 로 지정합니다.
 SELECT last_name, LPAD(salary, 15, '$') SALARY
 FROM employees;
 
---7.
+--7. 부서 90의 모든 사원에 대해 성(last_name) 및 
+--   재직 기간(주 단위)을 표시하도록 query 를 작성하시오. 
+--   주를 나타내는 숫자 열의 레이블로 TENURE를 지정하고
+--   주를 나타내는 숫자 값을 정수로 나타내시오.
 SELECT last_name, ROUND((SYSDATE-hire_date) / 7) TENURE
 FROM employees
 WHERE department_id = 90;
 
-----------------------------------------------
+--------------------------------------------------------------------------------
 
---sql04 문제----------------------------------
---1.
+--sql04 문제--------------------------------------------------------------------
+
+--1. 각 사원에 대해 다음 항목을 생성하는 질의를 작성하고 
+--   열 레이블을 Dream Salaries로 지정하시오.
+--   <employee last_name> earns <salary> monthly but wants <3 times salary>. 
+--   <예시> Matos earns $2,600.00 monthly but wants $7,800.00.
 SELECT last_name
        ||' earns '
        ||TO_CHAR(salary, 'fm$99,999.00')
@@ -469,7 +496,10 @@ SELECT last_name
        ||TO_CHAR(salary*3, 'fm$99,999.00')
 FROM employees;
 
---2.
+--2. 사원의 이름, 입사일 및 급여 검토일을 표시하시오.
+--   급여 검토일은 여섯 달이 경과한 후 첫번째 월요일입니다. 
+--   열 레이블을 REVIEW로 지정하고 
+--   날짜는 "2010.03.31 월요일"과 같은 형식으로 표시되도록 지정하시오.
 SELECT last_name, hire_date,
        TO_CHAR(NEXT_DAY(ADD_MONTHS(hire_date, 6),2), 'YYYY.MM.DD DAY') REVIEW
 FROM employees;
@@ -477,7 +507,9 @@ FROM employees;
 --NEXT_DAT(_,2) : 첫번째 월요일
 --TO_CHAR(_, 'YYYY.MM.DD DAY') : 문자열 변환
 
---3.
+--3. 이름, 입사일 및 업무 시작 요일을 표시하고 
+--   열 레이블을 DAY로 지정하시오. 
+--   월요일을 시작으로 해서 요일을 기준으로 결과를 정렬하시오.
 SELECT last_name, hire_date, TO_CHAR(hire_date, 'day') DAY
 FROM employees
 ORDER BY MOD(TO_NUMBER(TO_CHAR(hire_date, 'd'))+5, 7);
@@ -485,11 +517,29 @@ ORDER BY MOD(TO_NUMBER(TO_CHAR(hire_date, 'd'))+5, 7);
 --TO_NUMBER(_) + 5 => 6: 일, 7: 월
 --MOD(_,7) => 6: 일, 0: 월
 
---4.
+--상진이형 풀이
+SELECT last_name, hire_date, TO_CHAR(hire_date, 'day') DAY
+FROM employees
+ORDER BY TO_CHAR((hire_date-1), 'd');
+--hire_date-1 => 7:일, 1:월 (overflow??)
+
+--4. 사원의 이름과 커미션을 표시하는 질의를 작성하시오. 
+--   커미션을 받지 않는 사원일 경우 “No Commission”을 표시하시오. 
+--   열 레이블은 COMM으로 지정하시오.
 SELECT last_name, NVL(TO_CHAR(commission_pct), 'No Commission') COMM
 FROM employees;
 
---5.
+--5. DECODE 함수와 CASE 구문을 사용하여 다음 데이터에 따라 
+--   JOB_ID 열의 값을 기준으로 모든 사원의 등급을 표시하는 질의를 작성하시오.
+--   업무         등급
+--   AD_PRES     A
+--   ST_MAN      B
+--   IT_PROG     C
+--   SA_REP      D
+--   ST_CLERK    E
+--   그외        0
+
+--DECODE식
 SELECT last_name, job_id,
        DECODE(job_id, 'AD_PRES',  'A',
                       'ST_MAN',   'B',
@@ -499,4 +549,17 @@ SELECT last_name, job_id,
                                    0)
        GRADE
 FROM employees;
-----------------------------------------------
+
+--CASE식
+SELECT last_name, job_id,
+       CASE job_id WHEN 'AD_PRES'  THEN 'A'
+                   WHEN 'ST_MAN'   THEN 'B'
+                   WHEN 'IT_PROG'  THEN 'C'
+                   WHEN 'SA_REP'   THEN 'D'
+                   WHEN 'ST_CLERK' THEN 'E'
+                   ELSE                 '0'
+        END
+        GRADE
+FROM employees;
+
+--------------------------------------------------------------------------------
