@@ -55,7 +55,7 @@ SELECT   employee_id,last_name, job_id, &&column_name
 FROM     employees
 ORDER BY &column_name;
 --&&column_name에서 입력받은 값 &column_name에서 사용
-
+ 
 --다음 실행문에서도 전에 입력받은 &&값 계속 사용
 SELECT   employee_id, salary
 FROM     employees
