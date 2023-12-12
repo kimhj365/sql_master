@@ -440,6 +440,7 @@ ORDER BY e.employee_id;
 --   먼저 JOB_GRADES 테이블의 구조를 표시한 다음 
 --   모든 사원의 이름, 직무, 부서 이름, 급여 및 등급을 표시하는 
 --   query를 작성하시오.
+--   ※ job_grades 파일 열어서 스크립트 실행 후 실습
 
 DESC   job_grades;
 
@@ -461,19 +462,6 @@ FROM   employees e JOIN departments d
 --<★★★★서브 쿼리>
 --SELECT문(메인쿼리) 안의 SELECT문(서브쿼리)
 --서브쿼리 결과를 메인쿼리에서 사용
-
---다중행 서브쿼리
---ex. 부서 별 최대 급여 받는 사원 이름, 급여
-SELECT last_name, salary
-FROM   employees
-WHERE  salary IN (SELECT   MAX(salary)
-                  FROM     employees
-                  GROUP BY department_id);
-                  
---서브쿼리만 따로 떼도 돌아감                  
-SELECT   MAX(salary)
-FROM     employees
-GROUP BY department_id;
 
 --1. 단일 행 서브쿼리
 --하나의 행만 반환, 단일행 비교연산자 사용
@@ -508,4 +496,17 @@ WHERE  job_id = (SELECT job_id
 AND    salary > (SELECT salary
                  FROM   employees
                  WHERE  last_name = 'Abel');
-                 
+
+SELECT last_name, job_id, salary
+FROM   employees
+WHERE  salary = (SELECT MIN(salary)
+                 FROM   employees);
+
+--HAVING절에도 서브쿼리 사용 가능
+SELECT   department_id, MIN(salary)
+FROM     employees
+GROUP BY department_id
+HAVING   MIN(salary) > (SELECT MIN(salary)
+                        FROM employees
+                        WHERE department_id = 50);
+                        
