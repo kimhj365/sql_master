@@ -251,8 +251,8 @@ SELECT last_name, hire_date
 FROM   employees
 WHERE  department_id = (SELECT department_id
                         FROM   employees
-                        WHERE  last_name = 'Zlotkey')
-AND last_name != 'Zlotkey';
+                        WHERE  LOWER(last_name) = 'zlotkey')
+AND LOWER(last_name) != 'zlotkey';
 
 --2. 급여가 평균 급여보다 많은 모든 사원의 
 --   사원 번호와 이름을 표시하는 질의를 작성하고 
@@ -291,9 +291,9 @@ WHERE  department_id IN (SELECT department_id
 --   모든 사원의 이름과 급여를 표시하시오.
 SELECT last_name, salary
 FROM   employees
-WHERE  manager_id  = (SELECT employee_id
-                      FROM   employees
-                      WHERE  last_name = 'King');
+WHERE  manager_id = (SELECT employee_id
+                     FROM   employees
+                     WHERE  LOWER(last_name) = 'king');
 
 --6. Executive 부서의 모든 사원에 대한 
 --   부서 번호, 이름 및 업무 ID를 표시하시오.
@@ -301,11 +301,17 @@ SELECT department_id, last_name, job_id
 FROM   employees
 WHERE  department_id = (SELECT department_id
                         FROM   departments
-                        WHERE  department_name = 'Executive');
+                        WHERE  LOWER(department_name) = 'executive');
 
 --7. 평균 급여보다 많은 급여를 받고 이름에 u가 포함된 사원과 
 --   같은 부서에서 근무하는 모든 사원의 사원 번호, 이름 및 급여를 표시하시오.
-
+SELECT employee_id, last_name, salary
+FROM   employees
+WHERE  department_id IN (SELECT department_id
+                         FROM   employees
+                         WHERE  salary > (SELECT avg(salary)
+                                         FROM   employees)
+                         AND    LOWER(last_name) LIKE '%u%');
 
 --------------------------------------------------------------------------------
 
