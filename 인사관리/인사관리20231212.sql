@@ -372,7 +372,7 @@ DELETE my_employee;             --DML
 --TRUNCATE TABLE my_employee;   --DDL
 
 SELECT *
-FROM   my_employee;
+FROM   my_employee; 
 
 --------------------------------------------------------------------------------
 
