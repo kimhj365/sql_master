@@ -4,7 +4,7 @@ SELECT *
 FROM   employees
 WHERE  employee_id = 176;
 
---´Ù¸¥ »ç¿ëÀÚ°¡ ÀÌ¹Ì Á¶ÀÛÁßÀÌ¸é Á¶ÀÛ ºÒ°¡´É
+--ë‹¤ë¥¸ ì‚¬ìš©ìžê°€ ì´ë¯¸ ì¡°ìž‘ì¤‘ì´ë©´ ì¡°ìž‘ ë¶ˆê°€ëŠ¥
 UPDATE employees
 SET    salary = 77777
 WHERE  employee_id = 176;
