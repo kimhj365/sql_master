@@ -15,4 +15,4 @@ COMMIT;
 
 GRANT SELECT 
 ON    aaa
-TO    skj; 
+TO    skj;

@@ -36,4 +36,4 @@ TO    yedam;
 
 REVOKE SELECT
 ON     hr.employees
-FROM   yedam; 
+FROM   yedam;
