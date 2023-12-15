@@ -136,3 +136,15 @@ VALUES (s_number_seq, TO_DATE('2023/12/15 08:00','YYYY/MM/DD HH24:MI'),
         
 SELECT TO_DATE('2023/12/15 08:00','YYYY/MM/DD HH24:MI')
 FROM   dual;
+
+DROP TABLE screening;
+
+CREATE TABLE ticketing(
+        ticket_number VARCHAR(10) PRIMARY KEY,
+        user_id VARCHAR2(50),
+        movie_id VARCHAR2(50),
+        seat_row NUMBER(10),
+        seat_column NUMBER(10),
+        
+        
+        );
