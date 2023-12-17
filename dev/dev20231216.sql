@@ -86,3 +86,10 @@ SELECT  s.schedule_id, m.movie_name,
 FROM    schedule s, movie m
 where   s.movie_id = m.movie_id
 AND     s.movie_id = '23-006';
+
+ALTER TABLE schedule
+DROP COLUMN discount;
+
+SELECT *
+FROM   schedule;
+

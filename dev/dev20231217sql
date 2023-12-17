@@ -1,0 +1,65 @@
+SELECT  * 
+FROM    schedule;
+
+DELETE schedule;
+
+INSERT INTO t_user
+VALUES      ('sys', 'sys', '관리자', null, null);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (1, '23-001',TO_DATE('2023-12-20 08:30', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (2, '23-001',TO_DATE('2023-12-20 13:00', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (3, '23-001',TO_DATE('2023-12-20 16:30', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (4, '23-001',TO_DATE('2023-12-20 20:00', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (5, '23-001',TO_DATE('2023-12-20 23:30', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (6, '23-001',TO_DATE('2023-12-21 08:30', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (7, '23-001',TO_DATE('2023-12-21 08:30', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (8, '23-001',TO_DATE('2023-12-21 13:00', 'yyyy-MM-dd HH24:MI'), 50);
+
+INSERT INTO schedule(schedule_id, movie_id, schedule_date, remain_seat)
+VALUES      (9, '23-001',TO_DATE('2023-12-21 16:30', 'yyyy-MM-dd HH24:MI'), 50);
+
+ALTER TABLE schedule
+ADD   (discount VARCHAR2(20));
+
+ALTER TABLE schedule
+MODIFY   (discount VARCHAR2(20) DEFAULT ' ');
+
+UPDATE  schedule
+SET     discount = ' '
+WHERE   discount is null;
+
+UPDATE  schedule
+SET     discount = '조조'
+WHERE   TO_CHAR(schedule_date, 'HH24') <= 9
+AND     discount <> '조조';
+
+UPDATE  schedule
+SET     discount = '심야'
+WHERE   TO_CHAR(schedule_date, 'HH24') >= 23;
+
+SELECT  *
+FROM    schedule
+WHERE   schedule_Date >= TO_DATE('2023-12-20 18:00', 'yyyy-MM-dd HH24:MI');
+
+SELECT  s.schedule_id, m.movie_name, 
+TO_CHAR(s.schedule_date, 'yyyy-MM-dd HH24:MI') date_time,
+ s.remain_seat, s.discount
+FROM    schedule s, movie m
+where   s.movie_id = m.movie_id 
+AND     s.movie_id = '23-001'
+AND	  s.schedule_date >= TO_DATE('2023-12-21', 'yyyy-MM-dd');
