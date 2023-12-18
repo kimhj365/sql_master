@@ -62,4 +62,4 @@ TO_CHAR(s.schedule_date, 'yyyy-MM-dd HH24:MI') date_time,
 FROM    schedule s, movie m
 where   s.movie_id = m.movie_id 
 AND     s.movie_id = '23-001'
-AND	  s.schedule_date >= TO_DATE('2023-12-21', 'yyyy-MM-dd');
+AND	  s.schedule_date = TO_DATE('2023-12-21', 'yyyy-MM-dd');
