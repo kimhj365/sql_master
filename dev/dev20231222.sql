@@ -26,3 +26,4 @@ ORDER BY 1;
 UPDATE board 
 SET click_cnt = click_cnt + 1
 WHERE board_no = 1;
+
