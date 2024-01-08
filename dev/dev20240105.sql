@@ -35,6 +35,9 @@ VALUES (reply_seq.NEXTVAL, 3, 'È­ÀÌ¶Ç', 'user2');
 SELECT *
 FROM reply;
 
+SELECT *
+FROM member;
+
 --´ñ±Û ÆäÀÌÂ¡
 SELECT b.* FROM 
 (SELECT ROWNUM rn, a.*
@@ -47,4 +50,4 @@ ON r.replyer = m.id
 WHERE board_no = 1
 ORDER BY 1
 ) a ) b
-WHERE b.rn > (2-1)*5 AND b.rn <= 2*5;
+WHERE b.rn > (1-1)*5 AND b.rn <= 1*5;
