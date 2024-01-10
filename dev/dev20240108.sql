@@ -5,7 +5,7 @@ INSERT INTO member
 VALUES ('user5', '5555', '±è»ç¶û', 'user');
 
 INSERT INTO reply
-VALUES (reply_seq.NEXTVAL, 1, '¤·¤·', 'user4', sysdate);
+VALUES (reply_seq.NEXTVAL, 1, 'test', 'user5', sysdate);
 
 SELECT  replyer, COUNT(*)
 FROM    reply
