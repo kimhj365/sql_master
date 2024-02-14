@@ -1,33 +1,33 @@
--- ¼­¹ö ¼³Á¤(ÀÓ½Ã¼³Á¤) => ¼ö½Ã·Î Ç®¸² ¤Ð
+-- ì„œë²„ ì„¤ì •(ìž„ì‹œì„¤ì •) => ìˆ˜ì‹œë¡œ í’€ë¦¼ ã… 
 SET SERVEROUTPUT ON;
 
 -- PL/SQL
--- BEGIN~END : ºí·°
+-- BEGIN~END : ë¸”ëŸ­
 BEGIN
     DBMS_OUTPUT.PUT_LINE('Hello, World!');
 END;
 /   
--- / : ÇØ´ç ºí·° ÄÄÆÄÀÏ, ½ÇÇà ¸í·É¾î(ÇÊ¼ö) => µ¶¸³µÈ ÇÑÁÙ·Î Ç¥±â
+-- / : í•´ë‹¹ ë¸”ëŸ­ ì»´íŒŒì¼, ì‹¤í–‰ ëª…ë ¹ì–´(í•„ìˆ˜) => ë…ë¦½ëœ í•œì¤„ë¡œ í‘œê¸°
 
 
 DECLARE
-    -- DECLARE(¼±¾ðºÎ): Á¤ÀÇ ¹× ¼±¾ð
-    -- NUMBER(9,2): ÃÑ ±æÀÌ 9ÀÚ¸® = ½Ç¼ö 7ÀÚ¸® + ¼Ò¼ö 2ÀÚ¸®
-    -- Ä¡È¯º¯¼ö &: ÄÄÆÄÀÏÇÏ±â Àü ¹Ì¿Ï¼º ÇüÅÂ => Ä¡È¯º¯¼ö ÇØ°á ÈÄ ÄÄÆÄÀÏ
-    --            ºí·° À§Ä¡ »ó°ü¾øÀÌ »ç¿ë °¡´É
-    v_annual NUMBER(9,2) := &¿¬ºÀ;
-    -- TYPE: ÀÌ¹Ì Á¸ÀçÇÏ´Â º¯¼ö/Å×ÀÌºí ÂüÁ¶
+    -- DECLARE(ì„ ì–¸ë¶€): ì •ì˜ ë° ì„ ì–¸
+    -- NUMBER(9,2): ì´ ê¸¸ì´ 9ìžë¦¬ = ì‹¤ìˆ˜ 7ìžë¦¬ + ì†Œìˆ˜ 2ìžë¦¬
+    -- ì¹˜í™˜ë³€ìˆ˜ &: ì»´íŒŒì¼í•˜ê¸° ì „ ë¯¸ì™„ì„± í˜•íƒœ => ì¹˜í™˜ë³€ìˆ˜ í•´ê²° í›„ ì»´íŒŒì¼
+    --            ë¸”ëŸ­ ìœ„ì¹˜ ìƒê´€ì—†ì´ ì‚¬ìš© ê°€ëŠ¥
+    v_annual NUMBER(9,2) := &ì—°ë´‰;
+    -- TYPE: ì´ë¯¸ ì¡´ìž¬í•˜ëŠ” ë³€ìˆ˜/í…Œì´ë¸” ì°¸ì¡°
     v_sal v_annual%TYPE;
     
 BEGIN
-    -- BEGIN(½ÇÇàºÎ)
-    -- ÇÑÁÙ ³¡³¯¶§ ¸¶´Ù ¼¼¹ÌÄÝ·Ð
+    -- BEGIN(ì‹¤í–‰ë¶€)
+    -- í•œì¤„ ëë‚ ë•Œ ë§ˆë‹¤ ì„¸ë¯¸ì½œë¡ 
     v_sal := v_annual/12;
     DBMS_OUTPUT.PUT_LINE('The monthly salary is ' || TO_CHAR(v_sal));
 
 END;
 /
--- ÁßÃ¸ ºí·Ï
+-- ì¤‘ì²© ë¸”ë¡
 DECLARE
     v_weight NUMBER(3) := 600;
     v_message VARCHAR2(255):='Product 10012';
@@ -54,7 +54,7 @@ BEGIN
 END;
 /
 
--- ÁßÃ¸ºí·Ï Sample
+-- ì¤‘ì²©ë¸”ë¡ Sample
 DECLARE
     v_sal NUMBER(7,2) := 60000;
     v_comm v_sal%TYPE := v_sal * .20;
@@ -87,19 +87,19 @@ END;
 /
 
 
--- PL/SQLÀÇ SQL¹®
--- SELECT¹®
--- : º¯¼ö ÇÊ¿ä => DECLAREÀý ÇÊ¿ä
+-- PL/SQLì˜ SQLë¬¸
+-- SELECTë¬¸
+-- : ë³€ìˆ˜ í•„ìš” => DECLAREì ˆ í•„ìš”
 DECLARE
     v_eid   employees.employee_id%type;
     v_ename VARCHAR2(100);
 BEGIN
     SELECT employee_id, last_name
-    INTO   v_eid, v_ename   -- º¯¼ö °³¼ö = SELECTÀý Ä®·³ ¼ö
+    INTO   v_eid, v_ename   -- ë³€ìˆ˜ ê°œìˆ˜ = SELECTì ˆ ì¹¼ëŸ¼ ìˆ˜
     FROM   employees
-    WHERE  employee_id = &»ç¿ø¹øÈ£;
+    WHERE  employee_id = &ì‚¬ì›ë²ˆí˜¸;
     
-    DBMS_OUTPUT.PUT_LINE('»ç¿ø¹øÈ£ : ' || v_eid);
-    DBMS_OUTPUT.PUT_LINE('»ç¿øÀÌ¸§ : ' || v_ename);
+    DBMS_OUTPUT.PUT_LINE('ì‚¬ì›ë²ˆí˜¸ : ' || v_eid);
+    DBMS_OUTPUT.PUT_LINE('ì‚¬ì›ì´ë¦„ : ' || v_ename);
 END;
 /
