@@ -503,12 +503,13 @@ END;
 /*
 과제
 
-1.
+Q1.
 *
 **
 ***
 ****
 ***** 출력
+
 */
 
 -- 1. 기본 LOOP
@@ -545,6 +546,19 @@ BEGIN
     FOR num IN 1..5 LOOP
         v_star := v_star || '*';
         DBMS_OUTPUT.PUT_LINE(v_star);
+    END LOOP;
+END;
+/
+
+-- 3-1. 이중 FOR LOOP
+BEGIN
+    FOR counter IN 1..5 LOOP
+        FOR i IN 1..counter LOOP
+            -- PUT : 옆으로 이어서 출력
+            DBMS_OUTPUT.PUT('*');
+        END LOOP;
+        -- PUT 쓸때 반드시 마지막에 PUT_LINE으로 밀어서 출력해야됨
+        DBMS_OUTPUT.PUT_LINE('');
     END LOOP;
 END;
 /
