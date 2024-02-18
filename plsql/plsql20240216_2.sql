@@ -290,13 +290,18 @@ Q2.
 예) EXECUTE TEST_PRO(176)
 */
 
+CREATE TABLE test_employees
+AS
+    SELECT *
+    FROM employees;
+
 -- 프로시저 생성
 CREATE PROCEDURE test_pro
 (p_eid IN NUMBER)
 IS
 
 BEGIN
-    DELETE FROM employees
+    DELETE FROM test_employees
     WHERE employee_id = p_eid;
     
     IF SQL%ROWCOUNT <> 0 THEN
@@ -308,7 +313,7 @@ END;
 /
 
 SELECT *
-FROM   employees;
+FROM   test_employees;
 
 EXECUTE TEST_PRO(176);
 
@@ -322,7 +327,22 @@ Q3.
 실행결과) TAYLOR -> T*****  <- 이름 크기만큼 별표(*) 출력
 */
 
+CREATE PROCEDURE yedam_emp
+(p_eid IN VARCHAR2)
+IS
+    v_ename VARCHAR2(1000);
+BEGIN
+    SELECT last_name
+    INTO   v_ename
+    FROM   employees
+    WHERE  employee_id = p_eid;
 
+    v_ename := RPAD(SUBSTR(v_ename, 1, 1), LENGTH(v_ename), '*');
+    DBMS_OUTPUT.PUT_LINE(v_ename);
+END;
+/
+
+EXECUTE yedam_emp(176);
 
 /*
 Q4.
@@ -333,7 +353,42 @@ Q4.
 실행) EXECUTE get_emp(30)
 */
 
+CREATE PROCEDURE get_emp
+(p_deptid IN NUMBER)
+IS
+    CURSOR emp_cursor IS
+        SELECT employee_id, 
+               last_name
+        FROM   employees
+        WHERE  department_id = p_deptid;
+        
+    v_emp_info emp_cursor%ROWTYPE;   
+    e_no_emp EXCEPTION;
+   
+BEGIN
+    OPEN emp_cursor;
 
+    LOOP
+        FETCH emp_cursor INTO v_emp_info;
+        EXIT WHEN emp_cursor%NOTFOUND;
+        DBMS_OUTPUT.PUT('사원번호 : ' || v_emp_info.employee_id);
+        DBMS_OUTPUT.PUT_LINE(', 사원이름 : ' || v_emp_info.last_name);
+    END LOOP;
+    
+    IF emp_cursor%ROWCOUNT = 0 THEN
+        RAISE e_no_emp;
+    END IF;
+    
+    CLOSE emp_cursor;
+    
+EXCEPTION
+    WHEN e_no_emp THEN
+        DBMS_OUTPUT.PUT_LINE('해당 부서에는 사원이 없습니다.');
+    
+END;
+/
+
+EXECUTE get_emp(30);
 
 /*
 Q5.
@@ -341,3 +396,32 @@ Q5.
 만약 입력한 사원이 없는 경우에는 ‘No search employee!!’라는 메시지를 출력하세요.(예외처리)
 실행) EXECUTE y_update(200, 10)
 */
+DROP PROCEDURE y_update;
+
+CREATE PROCEDURE y_update
+(p_eid          IN NUMBER,
+ p_sal_increase IN NUMBER)
+IS
+    e_no_eid EXCEPTION;
+    
+BEGIN
+    UPDATE employees
+    SET    salary = salary + p_sal_increase
+    WHERE  employee_id = p_eid;
+    
+    IF SQL%ROWCOUNT <> 0 THEN
+        DBMS_OUTPUT.PUT_LINE('사원 급여정보가 갱신되었습니다.');
+    ELSE
+        RAISE e_no_eid;
+    END IF;
+    
+EXCEPTION
+    WHEN e_no_eid THEN
+        DBMS_OUTPUT.PUT_LINE('No search employee!!');
+    
+END;
+/
+
+EXECUTE y_update(200, 10);
+
+ROLLBACK;
