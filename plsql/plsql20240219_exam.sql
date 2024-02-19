@@ -111,10 +111,9 @@ CREATE OR REPLACE FUNCTION age_gender_func
     (p_jumin_id VARCHAR2)
     RETURN VARCHAR2
 IS
-    v_result VARCHAR2(1000);
     v_birthday DATE;
     v_age NUMBER(3,0);
-    v_gender VARCHAR(100);
+    v_gender VARCHAR(10);
 BEGIN
     -- 생년월일 
     IF SUBSTR(p_jumin_id, 7, 1) IN (1, 2) THEN
