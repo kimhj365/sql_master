@@ -330,20 +330,23 @@ Q3.
 CREATE PROCEDURE yedam_emp
 (p_eid IN VARCHAR2)
 IS
-    v_ename VARCHAR2(1000);
+    v_ename employees.last_name%TYPE;
+    v_result v_ename%TYPE;
 BEGIN
     SELECT last_name
     INTO   v_ename
     FROM   employees
     WHERE  employee_id = p_eid;
 
-    v_ename := RPAD(SUBSTR(v_ename, 1, 1), LENGTH(v_ename), '*');
-    DBMS_OUTPUT.PUT_LINE(v_ename);
+    v_result := RPAD(SUBSTR(v_ename, 1, 1), LENGTH(v_ename), '*');
+    DBMS_OUTPUT.PUT_LINE(v_ename || ' -> ' || v_result);
 END;
 /
 
-EXECUTE yedam_emp(176);
+EXECUTE yedam_emp(100);
 
+SELECT *
+FROM   employees;
 /*
 Q4.
 부서번호를 입력할 경우 
@@ -392,11 +395,10 @@ EXECUTE get_emp(30);
 
 /*
 Q5.
-직원들의 사번, 급여 증가치만 입력하면 Employees테이블에 쉽게 사원의 급여를 갱신할 수 있는 y_update 프로시저를 작성하세요. 
+직원들의 사번, 급여 증가ㄴ치만 입력하면 Employees테이블에 쉽게 사원의 급여를 갱신할 수 있는 y_update 프로시저를 작성하세요. 
 만약 입력한 사원이 없는 경우에는 ‘No search employee!!’라는 메시지를 출력하세요.(예외처리)
 실행) EXECUTE y_update(200, 10)
 */
-DROP PROCEDURE y_update;
 
 CREATE PROCEDURE y_update
 (p_eid          IN NUMBER,
@@ -406,7 +408,7 @@ IS
     
 BEGIN
     UPDATE employees
-    SET    salary = salary + p_sal_increase
+    SET    salary = salary + salary * (p_sal_increase / 100)
     WHERE  employee_id = p_eid;
     
     IF SQL%ROWCOUNT <> 0 THEN
@@ -424,4 +426,3 @@ END;
 
 EXECUTE y_update(200, 10);
 
-ROLLBACK;
