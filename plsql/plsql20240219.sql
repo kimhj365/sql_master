@@ -106,16 +106,14 @@ CREATE OR REPLACE FUNCTION y_yedam
 (p_eid employees.employee_id%TYPE)
 RETURN VARCHAR2
 IS
-    v_last_name employees.last_name%TYPE;
-    v_first_name employees.first_name%TYPE;
-    v_result employees.last_name%TYPE;
+    v_full_name employees.last_name%TYPE;
 BEGIN
-    SELECT last_name, first_name
-    INTO   v_last_name, v_first_name
+    SELECT first_name || ' ' || last_name
+    INTO   v_full_name
     FROM   employees
     WHERE  employee_id = p_eid;
     
-    RETURN v_last_name || ' ' || v_first_name;
+    RETURN v_full_name;
 END;
 /
 
@@ -140,25 +138,42 @@ CREATE OR REPLACE FUNCTION ydinc
 RETURN NUMBER
 IS
     v_sal employees.salary%TYPE;
-    v_result employees.salary%TYPE;
-
+    v_raise NUMBER(10);
 BEGIN
+    -- (1)
+--    SELECT CASE
+--        WHEN salary <= 5000 THEN
+--            salary * 1.2
+--        WHEN salary <= 10000 THEN
+--            salary * 1.15
+--        WHEN salary <= 20000 THEN
+--            salary * 1.1
+--        ELSE
+--            salary
+--        END as "new sal"
+--    INTO v_sal
+--    FROM employees
+--    WHERE employee_id = p_eid;
+--    
+--    RETURN v_sal;
+    
+    -- (2)
     SELECT salary
-    INTO   v_sal
-    FROM   employees
-    WHERE  employee_id = p_eid;
+    INTO v_sal
+    FROM employees
+    WHERE employee_id = p_eid;
     
     IF v_sal <= 5000 THEN
-        v_result := v_sal* 1.2;
+        v_raise := 20;
     ELSIF v_sal <= 10000 THEN
-        v_result := v_sal* 1.15;
+        v_raise := 15;
     ELSIF v_sal <= 20000 THEN
-        v_result := v_sal* 1.1;
+        v_raise := 10;
     ELSE
-        v_result := v_sal;
+        v_raise := 0;
     END IF;
     
-    RETURN v_result;
+    RETURN v_sal * (1 + v_raise / 100);
 END;
 /
 
@@ -181,18 +196,14 @@ CREATE OR REPLACE FUNCTION yd_func
 (p_eid employees.employee_id%TYPE)
 RETURN NUMBER
 IS
-    v_sal employees.salary%TYPE;
-    v_comm employees.commission_pct%TYPE;
-    v_result v_sal%TYPE;
-
+    v_annual employees.salary%TYPE;
 BEGIN
-    SELECT salary, commission_pct
-    INTO   v_sal, v_comm
+    SELECT (salary * (1 + NVL(commission_pct, 0))) * 12
+    INTO   v_annual
     FROM   employees
     WHERE  employee_id = p_eid;
 
-    v_result := (v_sal + (v_sal * NVL(v_comm, 0))) * 12; 
-    RETURN v_result;
+    RETURN v_annual;
 END;
 /
 
@@ -219,16 +230,9 @@ CREATE OR REPLACE FUNCTION subname
 (p_ename employees.last_name%TYPE)
 RETURN VARCHAR2
 IS
-    v_ename employees.last_name%TYPE;
-    v_result v_ename%TYPE;
-BEGIN
-    SELECT last_name
-    INTO   v_ename
-    FROM   employees
-    WHERE  last_name = p_ename;
 
-    v_result := RPAD(SUBSTR(v_ename, 1, 1), LENGTH(v_ename), '*');
-    RETURN v_result;
+BEGIN
+    RETURN RPAD(SUBSTR(p_ename, 1, 1), LENGTH(p_ename), '*');
 END;
 /
 
