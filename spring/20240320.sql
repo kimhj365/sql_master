@@ -14,3 +14,15 @@ SELECT * FROM customer;
 
 INSERT INTO customer(id, name, phone)
 VALUES (hibernate_sequence.NEXTVAL, '김하성', '010-1111-2222');
+
+
+CREATE TABLE comments(
+    seq NUMBER PRIMARY KEY
+    , name VARCHAR2(100)
+    , content VARCHAR2(500)
+    , board_seq NUMBER
+    , regdate DATE DEFAULT SYSDATE
+    , page_unit NUMBER
+);
+
+commit;
